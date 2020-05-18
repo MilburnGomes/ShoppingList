@@ -19,9 +19,36 @@ const App = () => {
     });
   };
 
+  function add(arr, name) {
+    const found = arr.some((el) => el.username === name);
+  }
+
   const addItem = (text) => {
     if (!text) {
       Alert.alert('Error', 'Please enter an item', {text: 'Ok'});
+    } else if (items.some((el) => el.text === text)) {
+      Alert.alert(
+        'Alert',
+        'Item Already Exists',
+        [
+          {
+            text: 'Nevermind, Add',
+            onPress: () => {
+              console.log('Nevermind, Add Pressed');
+              setItems((prevItems) => {
+                return [{id: uuidv4(), text}, ...prevItems];
+              });
+            },
+          },
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'Skip', onPress: () => console.log('Skip Pressed')},
+        ],
+        {cancelable: false},
+      );
     } else {
       setItems((prevItems) => {
         return [{id: uuidv4(), text}, ...prevItems];
