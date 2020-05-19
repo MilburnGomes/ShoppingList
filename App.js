@@ -19,8 +19,41 @@ const App = () => {
     });
   };
 
-  function add(arr, name) {
-    const found = arr.some((el) => el.username === name);
+  function editItem(id) {
+    console.log(`item to edit ${id}`);
+
+    Alert.prompt(
+      'Edit Item',
+      'Enter your item name',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: (newItem) => {
+            if (!newItem) {
+              Alert.alert('Error', 'Please enter an item to update', {
+                text: 'Ok',
+              });
+            } else {
+              console.log('OK Pressed, New Item: ' + newItem);
+              setItems((prevItems) => {
+                return prevItems.filter((item) => {
+                  if (item.id == id) {
+                    item.text = newItem;
+                  }
+                  return true;
+                });
+              });
+            }
+          },
+        },
+      ],
+      'plain-text',
+    );
   }
 
   const addItem = (text) => {
@@ -63,7 +96,7 @@ const App = () => {
       <FlatList
         data={items}
         renderItem={({item}) => (
-          <ListItem item={item} deleteItem={deleteItem} />
+          <ListItem item={item} editItem={editItem} deleteItem={deleteItem} />
         )}
       />
     </View>
